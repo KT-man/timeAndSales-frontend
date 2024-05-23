@@ -22,6 +22,7 @@ import TimeAndSalesInterface from "../types/TimeAndSalesInterface/TimeAndSalesIn
 const cleanUpCsvToJson = (
   initialCsv: string[][]
 ): Array<TimeAndSalesInterface> => {
+  console.log(initialCsv);
   const csvHeaders = initialCsv.shift() || [];
   console.log("Removed headers", { Headers: csvHeaders });
 
