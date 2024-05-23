@@ -1,4 +1,6 @@
 import ParsedCsvDataType from "@/types/ParsedCsvInterface/ParsedCsvDataType";
+import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
+import { createColumnHelper } from "@tanstack/react-table";
 import { FC } from "react";
 
 interface DataTableComponentProps {
@@ -6,11 +8,12 @@ interface DataTableComponentProps {
 }
 
 const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
-  const tableText = "Table";
+  const tableHeaders = createColumnHelper<TimeAndSalesInterface>();
+  console.log(tableHeaders);
 
   console.log({ tableData });
 
-  return <div>{tableText}</div>;
+  return <div>abc</div>;
 };
 
 export default DataTableComponent;

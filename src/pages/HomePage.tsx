@@ -1,12 +1,13 @@
 import React, { FormEvent, useState } from "react";
 import papaparse from "papaparse";
 import DataTableComponent from "../components/DataTableComponent";
-import ParsedCsvDataType from "@/types/ParsedCsvInterface/ParsedCsvDataType";
+import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
+import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
-  const [csvData, setCsvData] = useState<ParsedCsvDataType[]>([]);
+  const [csvData, setCsvData] = useState<Array<TimeAndSalesInterface>>([]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +32,9 @@ const HomePage: React.FC<HomePageProps> = () => {
           const convertedData = papaparse.parse<string[]>(reader.result);
 
           if (convertedData.errors.length === 0) {
-            setCsvData(convertedData.data);
+            const taggedJsonData = cleanUpCsvToJson(convertedData.data);
+
+            setCsvData(taggedJsonData);
           } else {
             console.log("Error with converting CSV", {
               errors: convertedData.errors,
