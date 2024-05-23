@@ -1,18 +1,70 @@
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import papaparse from "papaparse";
+import DataTableComponent from "../components/DataTableComponent";
+import ParsedCsvDataType from "@/types/ParsedCsvInterface/ParsedCsvDataType";
 
 interface HomePageProps {}
 
-const HomePage = (): React.FC<HomePageProps> => {
-  const csv = `time,open,high,low,close
-    2024-05-03T09:00:02+08:00,1.88,1.88,1.88,1.88
-    2024-05-03T09:00:20+08:00,1.9,1.9,1.9,1.9`;
-  const data = papaparse.parse(csv);
-  console.log(data);
+const HomePage: React.FC<HomePageProps> = () => {
+  const [csvData, setCsvData] = useState<ParsedCsvDataType[]>([]);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const inputField: HTMLInputElement | null =
+      document.querySelector("input[type='file']");
+
+    if (inputField && inputField.files) {
+      console.log(inputField.files);
+
+      const reader = new FileReader();
+      const uploadedFile = inputField.files[0];
+
+      reader.readAsText(uploadedFile);
+
+      // Callback called upon completion of FileReader read
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      reader.onload = (_ev) => {
+        // Save data to state if result is string
+        if (typeof reader.result === "string") {
+          // Parse CSV data
+          const convertedData = papaparse.parse<string[]>(reader.result);
+
+          if (convertedData.errors.length === 0) {
+            setCsvData(convertedData.data);
+          } else {
+            console.log("Error with converting CSV", {
+              errors: convertedData.errors,
+            });
+          }
+        }
+      };
+    }
+  };
+
   return (
     <>
       <div>This is Home Page</div>
+      <br></br>
       <div>Try to parse</div>
+      <br></br>
+      <form
+        encType="multipart/form-data"
+        action="upload"
+        onSubmit={handleSubmit}
+      >
+        <label htmlFor="fileInput">Upload your CSV:</label>
+        <input
+          name="fileInput"
+          id="fileInput"
+          type="file"
+          accept=".csv"
+        ></input>
+        <button type="submit">Submit</button>
+      </form>
+
+      <br />
+      <DataTableComponent tableData={csvData} />
     </>
   );
 };
