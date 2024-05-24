@@ -26,6 +26,5 @@
   },
   "include": ["src"],
   "extends": "./tsconfig.paths.json",
-  "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["**/node_modules", "dist", "**/.*/", "**/*.stories.tsx"]
 }

@@ -1,0 +1,10 @@
+.rootWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pageInput {
+  width: 50px;
+  text-align: center;
+}

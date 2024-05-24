@@ -1,10 +1,13 @@
 import React, { FormEvent, useState } from "react";
 import papaparse from "papaparse";
-import DataTableComponent from "../components/DataTableComponent";
 import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
 import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 
 import mockData from "../data/InitialArray.json";
+import DataTableComponent from "../components/DataTableComponent/DataTableComponent";
+import ControlPanelComponent from "../components/ControlPanelComponent/ControlPanelComponent";
+
+import styles from "./HomePage.module.css";
 
 interface HomePageProps {}
 
@@ -66,7 +69,10 @@ const HomePage: React.FC<HomePageProps> = () => {
       </form>
 
       <br />
-      <DataTableComponent tableData={csvData} />
+      <div className={styles.homePageWrapper}>
+        <ControlPanelComponent />
+        <DataTableComponent tableData={csvData} />
+      </div>
     </>
   );
 };

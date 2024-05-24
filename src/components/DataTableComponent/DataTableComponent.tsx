@@ -1,14 +1,16 @@
 import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 import {
-  PaginationState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 import styles from "./DataTableComponent.module.css";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import paginateStore from "../../recoilStores/paginate/paginateStore";
+import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
 
 interface DataTableComponentProps {
   tableData: Array<TimeAndSalesInterface>;
@@ -32,10 +34,8 @@ const columns = [
 ];
 
 const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 30,
-  });
+  const [pagination, setPagination] = useRecoilState(paginateStore);
+  const setPageCount = useSetRecoilState(pageCountStore);
 
   const table = useReactTable({
     data: tableData,
@@ -48,13 +48,15 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  console.log(tableHeaders);
-
-  console.log({ tableData });
+  useEffect(() => {
+    if (table) {
+      const totalPages = table.getPageCount();
+      setPageCount(totalPages);
+    }
+  }, [setPageCount, table, tableData]);
 
   return (
     <div className={styles.rootTableWrapper}>
-      <p> This is the table </p>
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {

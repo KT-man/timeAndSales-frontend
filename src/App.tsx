@@ -1,10 +1,13 @@
+import { RecoilRoot } from "recoil";
 import "./App.css";
 import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <>
-      <HomePage />
+      <RecoilRoot>
+        <HomePage />
+      </RecoilRoot>
     </>
   );
 }
