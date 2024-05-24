@@ -5,7 +5,7 @@ import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInt
 
 import mockData from "../data/InitialArray.json";
 import DataTableComponent from "../components/DataTableComponent/DataTableComponent";
-import ControlPanelComponent from "../components/ControlPanelComponent/ControlPanelComponent";
+import ControlPanelComponent from "@/components/ControlPanelComponent/ControlPanelComponent";
 
 import styles from "./HomePage.module.css";
 
