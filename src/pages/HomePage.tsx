@@ -3,8 +3,8 @@ import papaparse from "papaparse";
 import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
 import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 
-import mockData from "../data/InitialArray.json";
-import DataTableComponent from "../components/DataTableComponent/DataTableComponent";
+import mockData from "@/data/InitialArray.json";
+import DataTableComponent from "@/components/DataTableComponent/DataTableComponent";
 import ControlPanelComponent from "@/components/ControlPanelComponent/ControlPanelComponent";
 
 import styles from "./HomePage.module.css";
