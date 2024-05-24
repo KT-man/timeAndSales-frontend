@@ -8,7 +8,6 @@
     ['17:11:59', '1.56', '5000', 'Buy Up']
 ] 
 
-How to extract header column?
 
 Will return: 
 [
@@ -20,10 +19,17 @@ import camelCase from "./camelCase";
 import TimeAndSalesInterface from "../types/TimeAndSalesInterface/TimeAndSalesInterface";
 
 const cleanUpCsvToJson = (
-  initialCsv: string[][]
+  initialCsv: string[][],
+  // Used when table is given in reverse chronological order
+  isReverse = false
 ): Array<TimeAndSalesInterface> => {
   console.log(initialCsv);
-  const csvHeaders = initialCsv.shift() || [];
+  const csvHeaders = initialCsv.shift() || [
+    "Time",
+    "Price",
+    "Trade Size",
+    "Type",
+  ];
   console.log("Removed headers", { Headers: csvHeaders });
 
   const cleanHeaders = csvHeaders?.map((header) => camelCase(header)) as Array<
@@ -44,6 +50,10 @@ const cleanUpCsvToJson = (
 
     return finalObj;
   });
+
+  if (isReverse) {
+    return taggedArray.reverse();
+  }
 
   return taggedArray;
 };

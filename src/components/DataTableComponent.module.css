@@ -1,0 +1,8 @@
+.rootTableWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.thCells {
+  border-bottom: 1px solid black;
+}

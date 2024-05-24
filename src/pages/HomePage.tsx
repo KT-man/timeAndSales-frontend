@@ -4,10 +4,13 @@ import DataTableComponent from "../components/DataTableComponent";
 import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
 import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 
+import mockData from "../data/InitialArray.json";
+
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
-  const [csvData, setCsvData] = useState<Array<TimeAndSalesInterface>>([]);
+  const [csvData, setCsvData] =
+    useState<Array<TimeAndSalesInterface>>(mockData);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +35,7 @@ const HomePage: React.FC<HomePageProps> = () => {
           const convertedData = papaparse.parse<string[]>(reader.result);
 
           if (convertedData.errors.length === 0) {
-            const taggedJsonData = cleanUpCsvToJson(convertedData.data);
+            const taggedJsonData = cleanUpCsvToJson(convertedData.data, true);
 
             setCsvData(taggedJsonData);
           } else {
@@ -47,10 +50,6 @@ const HomePage: React.FC<HomePageProps> = () => {
 
   return (
     <>
-      <div>This is Home Page</div>
-      <br></br>
-      <div>Try to parse</div>
-      <br></br>
       <form
         encType="multipart/form-data"
         action="upload"
