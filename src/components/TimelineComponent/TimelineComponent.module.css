@@ -1,0 +1,4 @@
+.timelineComponentWrapper {
+  display: flex;
+  flex-direction: column;
+}

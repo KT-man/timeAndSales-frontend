@@ -1,12 +1,13 @@
-import React, { FormEvent, useState } from "react";
-import papaparse from "papaparse";
-import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
 import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
+import papaparse from "papaparse";
+import React, { FormEvent, useState } from "react";
+import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
 
-import mockData from "@/data/InitialArray.json";
-import DataTableComponent from "@/components/DataTableComponent/DataTableComponent";
 import ControlPanelComponent from "@/components/ControlPanelComponent/ControlPanelComponent";
+import DataTableComponent from "@/components/DataTableComponent/DataTableComponent";
+import mockData from "@/data/InitialArray.json";
 
+import TimelineComponent from "@/components/TimelineComponent/TimelineComponent";
 import styles from "./HomePage.module.css";
 
 interface HomePageProps {}
@@ -22,8 +23,6 @@ const HomePage: React.FC<HomePageProps> = () => {
       document.querySelector("input[type='file']");
 
     if (inputField && inputField.files) {
-      console.log(inputField.files);
-
       const reader = new FileReader();
       const uploadedFile = inputField.files[0];
 
@@ -52,7 +51,7 @@ const HomePage: React.FC<HomePageProps> = () => {
   };
 
   return (
-    <>
+    <div>
       <form
         encType="multipart/form-data"
         action="upload"
@@ -69,11 +68,14 @@ const HomePage: React.FC<HomePageProps> = () => {
       </form>
 
       <br />
+      <TimelineComponent csvData={csvData} />
+
+      <br></br>
       <div className={styles.homePageWrapper}>
         <ControlPanelComponent />
         <DataTableComponent tableData={csvData} />
       </div>
-    </>
+    </div>
   );
 };
 

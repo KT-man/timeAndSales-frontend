@@ -15,8 +15,9 @@ Will return:
 ]
  */
 
-import camelCase from "./camelCase";
 import TimeAndSalesInterface from "../types/TimeAndSalesInterface/TimeAndSalesInterface";
+import camelCase from "./camelCase";
+import convertTimeToUnixTime from "./convertTimeToUnixTime/convertTimeToUnixTime";
 
 const cleanUpCsvToJson = (
   initialCsv: string[][],
@@ -44,10 +45,17 @@ const cleanUpCsvToJson = (
       type: "",
     };
 
+    const formattedTimeArr = [];
+
     csvRow.forEach((propertyValue, index) => {
       finalObj[cleanHeaders[index]] = propertyValue;
+      if (cleanHeaders[index] === "time") {
+        const convertedTime = convertTimeToUnixTime(cleanHeaders[index]);
+        formattedTimeArr.push(convertedTime);
+      }
     });
 
+    console.log(formattedTimeArr);
     return finalObj;
   });
 

@@ -1,5 +1,5 @@
 interface TimeAndSalesInterface {
-  // Format HH:MM:SS
+  /** @description Time Format HH:MM:SS */
   time: string;
   price: string;
   tradeSize: string;

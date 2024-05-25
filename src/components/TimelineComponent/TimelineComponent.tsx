@@ -1,0 +1,22 @@
+import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
+import { FC, useEffect } from "react";
+import TimelineControllerComponent from "./TimelineControllerComponent/TimelineControllerComponent";
+import TimelineSliderComponent from "./TimelineSliderComponent/TimelineSliderComponent";
+
+interface TimelineComponentProps {
+  csvData: TimeAndSalesInterface[];
+}
+
+const TimelineComponent: FC<TimelineComponentProps> = ({ csvData }) => {
+  // Transform and update recoil states with csvData once it changes
+  useEffect(() => {}, [csvData]);
+
+  return (
+    <>
+      <TimelineControllerComponent />
+      <TimelineSliderComponent />
+    </>
+  );
+};
+
+export default TimelineComponent;

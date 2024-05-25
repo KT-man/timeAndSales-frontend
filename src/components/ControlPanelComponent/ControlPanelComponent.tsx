@@ -1,9 +1,9 @@
 import { FC } from "react";
-import styles from "./ControlPanelComponent.module.css";
-import paginateStore from "../../recoilStores/paginate/paginateStore";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import pageIndexSelector from "../../recoilStores/paginate/pageIndexSelector";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
+import pageIndexSelector from "../../recoilStores/paginate/pageIndexSelector";
+import paginateStore from "../../recoilStores/paginate/paginateStore";
+import styles from "./ControlPanelComponent.module.css";
 
 interface ControlPanelComponentProps {}
 
@@ -26,15 +26,25 @@ const ControlPanelComponent: FC<ControlPanelComponentProps> = () => {
     }
     setPageIndex(1);
   };
-  const handleGoToFirstPage = () => {
-    setPageState((prevState) => {
-      return { ...prevState, pageIndex: 0 };
-    });
+  const handleGoBackTenPages = () => {
+    if (pageState.pageIndex - 11 < 0) {
+      setPageState((prevState) => {
+        return { ...prevState, pageIndex: 0 };
+      });
+      return;
+    }
+
+    setPageIndex(-10);
   };
   const handleGoToLastPage = () => {
-    setPageState((prevState) => {
-      return { ...prevState, pageIndex: maxPageCount - 1 };
-    });
+    if (pageState.pageIndex + 10 > maxPageCount - 1) {
+      setPageState((prevState) => {
+        return { ...prevState, pageIndex: maxPageCount - 1 };
+      });
+      return;
+    }
+
+    setPageIndex(10);
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const convertedNumber = Number(e.target.value);
@@ -51,7 +61,7 @@ const ControlPanelComponent: FC<ControlPanelComponentProps> = () => {
   return (
     <div className={styles.rootWrapper}>
       {/* Left side buttons */}
-      <button onClick={handleGoToFirstPage}>{`<<`}</button>
+      <button onClick={handleGoBackTenPages}>{`<<`}</button>
       <button onClick={handleBackOnePage}>{`<`}</button>
 
       {/* Input field to jump pages */}
