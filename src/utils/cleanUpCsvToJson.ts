@@ -15,9 +15,9 @@ Will return:
 ]
  */
 
-import TimeAndSalesInterface from "../types/TimeAndSalesInterface/TimeAndSalesInterface";
-import camelCase from "./camelCase";
-import convertTimeToUnixTime from "./convertTimeToUnixTime/convertTimeToUnixTime";
+import TimeAndSalesInterface from '../types/TimeAndSalesInterface/TimeAndSalesInterface';
+import camelCase from './camelCase';
+import convertTimeToUnixTime from './convertTimeToUnixTime/convertTimeToUnixTime';
 
 const cleanUpCsvToJson = (
   initialCsv: string[][],
@@ -26,31 +26,33 @@ const cleanUpCsvToJson = (
 ): Array<TimeAndSalesInterface> => {
   console.log(initialCsv);
   const csvHeaders = initialCsv.shift() || [
-    "Time",
-    "Price",
-    "Trade Size",
-    "Type",
+    'Time',
+    'Price',
+    'Trade Size',
+    'Type',
   ];
-  console.log("Removed headers", { Headers: csvHeaders });
+  console.log('Removed headers', { Headers: csvHeaders });
 
   const cleanHeaders = csvHeaders?.map((header) => camelCase(header)) as Array<
     keyof TimeAndSalesInterface
   >;
 
+  const formattedTimeArr = [];
+
   const taggedArray = initialCsv.map((csvRow) => {
     const finalObj: TimeAndSalesInterface = {
-      time: "",
-      price: "",
-      tradeSize: "",
-      type: "",
+      time: '',
+      price: '',
+      tradeSize: '',
+      type: '',
     };
-
-    const formattedTimeArr = [];
 
     csvRow.forEach((propertyValue, index) => {
       finalObj[cleanHeaders[index]] = propertyValue;
-      if (cleanHeaders[index] === "time") {
-        const convertedTime = convertTimeToUnixTime(cleanHeaders[index]);
+      if (cleanHeaders[index] === 'time') {
+        const convertedTime = convertTimeToUnixTime(propertyValue);
+
+        /** Add formattedTime property to object */
         formattedTimeArr.push(convertedTime);
       }
     });

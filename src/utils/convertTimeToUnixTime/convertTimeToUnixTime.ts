@@ -1,5 +1,6 @@
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import { HHMMSS_Format } from '@/config/constants';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 /**
@@ -9,7 +10,7 @@ dayjs.extend(customParseFormat);
  */
 
 const convertTimeToUnixTime = (dateTime: string) => {
-  const convertedDate = dayjs(dateTime, ["HH:mm:ss"]);
+  const convertedDate = dayjs(dateTime, [HHMMSS_Format]);
   console.log(convertedDate);
 
   return convertedDate;
