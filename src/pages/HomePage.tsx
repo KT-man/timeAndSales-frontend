@@ -58,8 +58,7 @@ const HomePage: React.FC<HomePageProps> = () => {
               endTime,
               currentTime: startTime,
             };
-
-            console.log(taggedJsonData);
+            console.log(startTime, endTime, unixTimeArray);
 
             // Set states
             setCsvData(taggedJsonData);
