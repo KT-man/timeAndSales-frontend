@@ -39,6 +39,7 @@ const cleanUpCsvToJson = (
   const taggedArray = initialCsv.map((csvRow) => {
     const finalObj: TimeAndSalesInterface = {
       time: "",
+      unixTime: 0,
       price: "",
       tradeSize: "",
       type: "",

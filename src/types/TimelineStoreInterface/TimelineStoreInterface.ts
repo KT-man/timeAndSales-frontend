@@ -1,7 +1,7 @@
 interface TimelineStoreInterface {
-  startTime: string;
-  endTime: string;
-  currentTime: string;
+  startTime: number;
+  endTime: number;
+  currentTime: number;
 }
 
 export default TimelineStoreInterface;

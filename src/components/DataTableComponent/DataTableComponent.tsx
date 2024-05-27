@@ -1,4 +1,6 @@
-import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
+import TimeAndSalesInterface, {
+  TimeAndSalesTableInterface,
+} from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 import {
   createColumnHelper,
   flexRender,
@@ -12,8 +14,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import paginateStore from "../../recoilStores/paginate/paginateStore";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
 
-interface TimeAndSalesTableInterface
-  extends Omit<TimeAndSalesInterface, "unixTime"> {}
 interface DataTableComponentProps {
   tableData: Array<TimeAndSalesInterface>;
 }

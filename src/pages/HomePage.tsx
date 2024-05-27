@@ -9,12 +9,16 @@ import mockData from "@/data/InitialArray.json";
 
 import TimelineComponent from "@/components/TimelineComponent/TimelineComponent";
 import styles from "./HomePage.module.css";
+import TimelineStoreInterface from "@/types/TimelineStoreInterface/TimelineStoreInterface";
+import { useSetRecoilState } from "recoil";
+import timelineStore from "@/recoilStores/timeline/timelineStore";
 
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
   const [csvData, setCsvData] =
     useState<Array<TimeAndSalesInterface>>(mockData);
+  const setTimelineStore = useSetRecoilState(timelineStore);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,8 +43,27 @@ const HomePage: React.FC<HomePageProps> = () => {
           if (convertedData.errors.length === 0) {
             const taggedJsonData = cleanUpCsvToJson(convertedData.data);
 
+            const unixTimeArray = taggedJsonData.map(
+              ({ unixTime }) => unixTime
+            );
+            if (unixTimeArray.length === 0) {
+              throw new Error("Unix time not populated, probably an error ");
+            }
+
+            const startTime = Math.min(...unixTimeArray);
+            const endTime = Math.max(...unixTimeArray);
+
+            const timelineState: TimelineStoreInterface = {
+              startTime,
+              endTime,
+              currentTime: startTime,
+            };
+
+            console.log(taggedJsonData);
+
             // Set states
             setCsvData(taggedJsonData);
+            setTimelineStore(timelineState);
           } else {
             console.log("Error with converting CSV", {
               errors: convertedData.errors,

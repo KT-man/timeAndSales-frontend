@@ -48,12 +48,10 @@ const ControlPanelComponent: FC<ControlPanelComponentProps> = () => {
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const convertedNumber = Number(e.target.value);
-    if (
-      Number.isInteger(convertedNumber) &&
-      convertedNumber <= maxPageCount - 1
-    ) {
+
+    if (Number.isInteger(convertedNumber) && convertedNumber <= maxPageCount) {
       setPageState((prevState) => {
-        return { ...prevState, pageIndex: convertedNumber };
+        return { ...prevState, pageIndex: convertedNumber - 1 };
       });
     }
   };
@@ -70,12 +68,12 @@ const ControlPanelComponent: FC<ControlPanelComponentProps> = () => {
           Page{" "}
           <input
             type="text"
-            value={pageState.pageIndex}
+            value={pageState.pageIndex + 1}
             className={styles.pageInput}
             onChange={handleInputChange}
           ></input>
         </label>
-        <span>of {maxPageCount - 1}</span>
+        <span>of {maxPageCount}</span>
       </div>
 
       {/* Right side buttons */}
