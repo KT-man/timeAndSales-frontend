@@ -12,11 +12,13 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import paginateStore from "../../recoilStores/paginate/paginateStore";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
 
+interface TimeAndSalesTableInterface
+  extends Omit<TimeAndSalesInterface, "unixTime"> {}
 interface DataTableComponentProps {
   tableData: Array<TimeAndSalesInterface>;
 }
 
-const tableHeaders = createColumnHelper<TimeAndSalesInterface>();
+const tableHeaders = createColumnHelper<TimeAndSalesTableInterface>();
 
 const columns = [
   tableHeaders.accessor("time", {

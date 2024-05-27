@@ -9,63 +9,84 @@
 ] 
 
 
-Will return: 
+Will return a sorted array in ascending order based on unixTime: 
 [
-    {time: '17:15:55', price: '1.56', tradeSize: '5000', type: 'Buy Up'}
+    {time: '17:15:55', unixTime: -number-, price: '1.56', tradeSize: '5000', type: 'Buy Up'}
 ]
  */
 
-import TimeAndSalesInterface from '../types/TimeAndSalesInterface/TimeAndSalesInterface';
-import camelCase from './camelCase';
-import convertTimeToUnixTime from './convertTimeToUnixTime/convertTimeToUnixTime';
+import TimeAndSalesInterface from "../types/TimeAndSalesInterface/TimeAndSalesInterface";
+import camelCase from "./camelCase";
+import convertTimeToUnixTime from "./convertTimeToUnixTime/convertTimeToUnixTime";
 
 const cleanUpCsvToJson = (
-  initialCsv: string[][],
-  // Used when table is given in reverse chronological order
-  isReverse = false
+  initialCsv: string[][]
 ): Array<TimeAndSalesInterface> => {
   console.log(initialCsv);
   const csvHeaders = initialCsv.shift() || [
-    'Time',
-    'Price',
-    'Trade Size',
-    'Type',
+    "Time",
+    "UnixTime",
+    "Price",
+    "Trade Size",
+    "Type",
   ];
-  console.log('Removed headers', { Headers: csvHeaders });
+  console.log("Removed headers", { Headers: csvHeaders });
 
   const cleanHeaders = csvHeaders?.map((header) => camelCase(header)) as Array<
     keyof TimeAndSalesInterface
   >;
 
-  const formattedTimeArr = [];
-
   const taggedArray = initialCsv.map((csvRow) => {
     const finalObj: TimeAndSalesInterface = {
-      time: '',
-      price: '',
-      tradeSize: '',
-      type: '',
+      time: "",
+      price: "",
+      tradeSize: "",
+      type: "",
     };
 
     csvRow.forEach((propertyValue, index) => {
-      finalObj[cleanHeaders[index]] = propertyValue;
-      if (cleanHeaders[index] === 'time') {
-        const convertedTime = convertTimeToUnixTime(propertyValue);
+      const objectProperty = cleanHeaders[index];
 
-        /** Add formattedTime property to object */
-        formattedTimeArr.push(convertedTime);
+      switch (objectProperty) {
+        case "time":
+          {
+            finalObj.time = propertyValue;
+
+            const convertedTime = convertTimeToUnixTime(propertyValue);
+            finalObj.unixTime = convertedTime;
+          }
+          break;
+        case "price":
+          finalObj.price = propertyValue;
+          break;
+        case "tradeSize":
+          finalObj.tradeSize = propertyValue;
+          break;
+        case "type":
+          finalObj.type = propertyValue;
+          break;
+        default:
+          console.error("Header not recognized, please double check", {
+            header: objectProperty,
+          });
       }
     });
 
-    console.log(formattedTimeArr);
     return finalObj;
   });
 
-  if (isReverse) {
-    return taggedArray.reverse();
-  }
+  // Sort the tagged array in chronological order
+  const sortedArray = taggedArray.sort(
+    ({ unixTime: aUnixTime }, { unixTime: bUnixTime }) => {
+      if (aUnixTime && bUnixTime) {
+        return aUnixTime - bUnixTime;
+      } else {
+        return 0;
+      }
+    }
+  );
 
-  return taggedArray;
+  return sortedArray;
 };
 
 export default cleanUpCsvToJson;
