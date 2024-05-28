@@ -9,7 +9,7 @@ interface TimeAndSalesInterface {
   type: string;
 }
 
-export interface TimeAndSalesTableInterface
-  extends Omit<TimeAndSalesInterface, "unixTime"> {}
+// export interface TimeAndSalesTableInterface
+//   extends Omit<TimeAndSalesInterface, "unixTime"> {}
 
 export default TimeAndSalesInterface;

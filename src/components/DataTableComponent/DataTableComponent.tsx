@@ -1,42 +1,70 @@
-import TimeAndSalesInterface, {
-  TimeAndSalesTableInterface,
-} from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
+import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 import {
+  ColumnFilter,
+  VisibilityState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./DataTableComponent.module.css";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import paginateStore from "../../recoilStores/paginate/paginateStore";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
+import currentTimeSelector from "@/recoilStores/timeline/currentTimeSelector";
 
 interface DataTableComponentProps {
   tableData: Array<TimeAndSalesInterface>;
 }
 
-const tableHeaders = createColumnHelper<TimeAndSalesTableInterface>();
+const columnHelper = createColumnHelper<TimeAndSalesInterface>();
 
 const columns = [
-  tableHeaders.accessor("time", {
+  columnHelper.accessor("time", {
+    id: "time",
     cell: (info) => info.getValue(),
   }),
-  tableHeaders.accessor("price", {
+  columnHelper.accessor("unixTime", {
+    id: "unixTime",
+    cell: (info) => info.getValue(),
+    filterFn: (row, columnId, filterValue) => {
+      console.log(filterValue);
+      const currentValue = row.getValue<number>(columnId);
+      const isPastValue = currentValue < filterValue;
+      return isPastValue;
+    },
+  }),
+  columnHelper.accessor("price", {
+    id: "price",
     cell: (info) => info.getValue(),
   }),
-  tableHeaders.accessor("tradeSize", {
+  columnHelper.accessor("tradeSize", {
+    id: "tradeSize",
     cell: (info) => info.getValue(),
   }),
-  tableHeaders.accessor("type", {
+  columnHelper.accessor("type", {
+    id: "type",
     cell: (info) => info.getValue(),
   }),
 ];
 
 const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
+  const currentTime = useRecoilValue(currentTimeSelector);
   const [pagination, setPagination] = useRecoilState(paginateStore);
+  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([
+    { id: "unixTime", value: currentTime },
+  ]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    time: true,
+    unixTime: false,
+    price: true,
+    tradeSize: true,
+    type: true,
+  });
+
   const setPageCount = useSetRecoilState(pageCountStore);
 
   const table = useReactTable({
@@ -45,9 +73,14 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
     getCoreRowModel: getCoreRowModel(),
     state: {
       pagination,
+      columnFilters,
+      columnVisibility,
     },
     onPaginationChange: setPagination,
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   useEffect(() => {

@@ -17,8 +17,10 @@ const TimelineSliderComponent: FC<TimelineSliderComponentProps> = () => {
         <input
           type="range"
           onChange={(e) => {
-            console.log(e.target.value);
-            setCurrentTime(Number(e.target.value));
+            // Debounced
+            setTimeout(() => {
+              setCurrentTime(Number(e.target.value));
+            }, 300);
           }}
           step={300}
           min={timelineData.startTime}
