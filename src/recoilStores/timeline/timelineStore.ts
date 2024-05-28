@@ -1,12 +1,13 @@
 import TimelineStoreInterface from "@/types/TimelineStoreInterface/TimelineStoreInterface";
+import dayjs from "dayjs";
 import { atom } from "recoil";
 
 const timelineStore = atom<TimelineStoreInterface>({
   key: "timeline",
   default: {
-    startTime: 0,
-    endTime: 0,
-    currentTime: 0,
+    startTime: dayjs().unix(),
+    endTime: dayjs().add(8, "hours").unix(),
+    currentTime: dayjs().unix(),
   },
 });
 

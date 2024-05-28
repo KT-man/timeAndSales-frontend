@@ -1,20 +1,26 @@
 import { FC } from "react";
 
 import styles from "./TimelineSliderComponent.module.css";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import timelineStore from "@/recoilStores/timeline/timelineStore";
+import currentTimeSelector from "@/recoilStores/timeline/currentTimeSelector";
 
 interface TimelineSliderComponentProps {}
 
 const TimelineSliderComponent: FC<TimelineSliderComponentProps> = () => {
-  const [timelineData, setTimelineData] = useRecoilState(timelineStore);
-  console.log(timelineData);
+  const timelineData = useRecoilValue(timelineStore);
+  const setCurrentTime = useSetRecoilState(currentTimeSelector);
   return (
     <div className={styles.rootWrapper}>
       <label>
         Set timing here{" "}
         <input
           type="range"
+          onChange={(e) => {
+            console.log(e.target.value);
+            setCurrentTime(Number(e.target.value));
+          }}
+          step={300}
           min={timelineData.startTime}
           max={timelineData.endTime}
           className={styles.rangeInput}

@@ -38,7 +38,9 @@ const HomePage: React.FC<HomePageProps> = () => {
         // Save data to state if result is string
         if (typeof reader.result === "string") {
           // Parse CSV data
-          const convertedData = papaparse.parse<string[]>(reader.result);
+          const convertedData = papaparse.parse<string[]>(reader.result, {
+            skipEmptyLines: true,
+          });
 
           if (convertedData.errors.length === 0) {
             const taggedJsonData = cleanUpCsvToJson(convertedData.data);
