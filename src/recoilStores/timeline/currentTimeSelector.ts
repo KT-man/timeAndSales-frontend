@@ -9,7 +9,7 @@ const currentTimeSelector = selector({
     set(timelineStore, (oldValue: TimelineStoreInterface) => {
       return {
         ...oldValue,
-        pageIndex: newValue,
+        currentTime: newValue,
       } as TimelineStoreInterface;
     });
   },

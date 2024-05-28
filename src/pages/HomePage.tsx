@@ -10,15 +10,17 @@ import mockData from "@/data/InitialArray.json";
 import TimelineComponent from "@/components/TimelineComponent/TimelineComponent";
 import styles from "./HomePage.module.css";
 import TimelineStoreInterface from "@/types/TimelineStoreInterface/TimelineStoreInterface";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import timelineStore from "@/recoilStores/timeline/timelineStore";
+import convertUnixToTime from "@/components/TimelineComponent/utils/convertUnixToTime";
 
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
   const [csvData, setCsvData] =
     useState<Array<TimeAndSalesInterface>>(mockData);
-  const setTimelineStore = useSetRecoilState(timelineStore);
+  const [timelineData, setTimelineData] = useRecoilState(timelineStore);
+  console.log(timelineData);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -64,7 +66,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 
             // Set states
             setCsvData(taggedJsonData);
-            setTimelineStore(timelineState);
+            setTimelineData(timelineState);
           } else {
             console.log("Error with converting CSV", {
               errors: convertedData.errors,
@@ -94,7 +96,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 
       <br />
       <TimelineComponent csvData={csvData} />
-
+      <p>Current time: {convertUnixToTime(timelineData.currentTime)}</p>
       <br></br>
       <div className={styles.homePageWrapper}>
         <ControlPanelComponent />
