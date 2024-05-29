@@ -1,5 +1,7 @@
 # Time and Sales data on Frontend
 
+![alt text](image.png)
+
 - Hosted on AWS amplify at: https://staging.d25dhwi4hyt16u.amplifyapp.com/
 - Built on React + Vite
 - POC project to replay level 2(?) sales data for users to test out their strategies
