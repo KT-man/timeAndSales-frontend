@@ -2,7 +2,7 @@ import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInt
 import { FC, useEffect } from "react";
 import TimelineControllerComponent from "./TimelineControllerComponent/TimelineControllerComponent";
 import TimelineSliderComponent from "./TimelineSliderComponent/TimelineSliderComponent";
-
+import styles from "./TimelineComponent.module.css";
 interface TimelineComponentProps {
   csvData: TimeAndSalesInterface[];
 }
@@ -12,10 +12,10 @@ const TimelineComponent: FC<TimelineComponentProps> = ({ csvData }) => {
   useEffect(() => {}, [csvData]);
 
   return (
-    <>
+    <div className={styles.timelineComponentWrapper}>
       <TimelineControllerComponent />
       <TimelineSliderComponent />
-    </>
+    </div>
   );
 };
 

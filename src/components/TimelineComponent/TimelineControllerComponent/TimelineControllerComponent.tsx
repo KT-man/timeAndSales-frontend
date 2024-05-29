@@ -116,37 +116,44 @@ const TimelineControllerComponent: FC<
       className={styles.controllerWrapper}
       data-test-id="TimelineControllerComponent"
     >
-      <div className={styles.presetButtonsWrapper}>
+      <div className={styles.buttonInstructionWrapper}>
         <span>Click on button to start timer (1s interval)</span>
-        <button
-          type="button"
-          onClick={normalSpeedHandler}
-          disabled={activeTimer}
-        >
-          Normal
-        </button>
-        <button
-          type="button"
-          onClick={doubleSpeedHandler}
-          disabled={activeTimer}
-        >
-          2x
-        </button>
-        <button type="button" onClick={quadSpeedHandler} disabled={activeTimer}>
-          4x
-        </button>
-        <button
-          type="button"
-          onClick={stopTimerHandler}
-          disabled={!activeTimer}
-        >
-          Stop Timer
-        </button>
+        <div className={styles.presetButtonsWrapper}>
+          <button
+            type="button"
+            onClick={normalSpeedHandler}
+            disabled={activeTimer}
+          >
+            Normal
+          </button>
+          <button
+            type="button"
+            onClick={doubleSpeedHandler}
+            disabled={activeTimer}
+          >
+            2x
+          </button>
+          <button
+            type="button"
+            onClick={quadSpeedHandler}
+            disabled={activeTimer}
+          >
+            4x
+          </button>
+          <button
+            type="button"
+            onClick={stopTimerHandler}
+            disabled={!activeTimer}
+          >
+            Stop Timer
+          </button>
+        </div>
       </div>
 
       <div className={styles.customSpeedWrapper}>
         <label htmlFor="customSpeedInput">Custom speed</label>
         <input
+          className={styles.customSpeedInput}
           name="customSpeedInput"
           type="text"
           value={customSpeed}
