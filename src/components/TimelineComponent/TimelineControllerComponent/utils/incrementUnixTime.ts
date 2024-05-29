@@ -7,14 +7,15 @@ import dayjs from "dayjs";
 import { SetterOrUpdater } from "recoil";
 
 function incrementUnixTime({
-  currentTime,
+  getCurrentTime,
   speed,
   setterFn,
 }: {
-  currentTime: number;
+  getCurrentTime: () => number;
   speed: number;
   setterFn: SetterOrUpdater<number>;
 }): void {
+  const currentTime = getCurrentTime();
   const newTime = dayjs.unix(currentTime).add(speed * 1, "seconds");
   setterFn(newTime.unix());
 }

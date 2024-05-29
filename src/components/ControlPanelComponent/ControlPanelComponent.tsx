@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
 import pageIndexSelector from "../../recoilStores/paginate/pageIndexSelector";
@@ -11,8 +11,11 @@ const ControlPanelComponent: FC<ControlPanelComponentProps> = () => {
   const [pageState, setPageState] = useRecoilState(paginateStore);
   const maxPageCount = useRecoilValue(pageCountStore);
   const setPageIndex = useSetRecoilState(pageIndexSelector);
-  console.log(pageState);
-  console.log(maxPageCount);
+
+  console.log({ pageState });
+  const currentPage = useMemo(() => {
+    return pageState.pageIndex + 1;
+  }, [pageState.pageIndex]);
 
   const handleBackOnePage = () => {
     if (pageState.pageIndex === 0) {
@@ -68,7 +71,7 @@ const ControlPanelComponent: FC<ControlPanelComponentProps> = () => {
           Page{" "}
           <input
             type="text"
-            value={pageState.pageIndex + 1}
+            value={currentPage}
             className={styles.pageInput}
             onChange={handleInputChange}
           ></input>

@@ -31,11 +31,11 @@ const columns = [
     id: "unixTime",
     cell: (info) => info.getValue(),
     filterFn: (row, columnId, filterValue) => {
-      console.log(filterValue);
       const currentValue = row.getValue<number>(columnId);
       const isPastValue = currentValue < filterValue;
       return isPastValue;
     },
+    enableGlobalFilter: true,
   }),
   columnHelper.accessor("price", {
     id: "price",
@@ -81,17 +81,24 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
+    autoResetPageIndex: false,
   });
 
   useEffect(() => {
+    // Set Pagination, set column filtering
     if (table) {
       const totalPages = table.getPageCount();
+
       setPageCount(totalPages);
+
+      const unixTimeColumn = table.getColumn("unixTime");
+      unixTimeColumn?.setFilterValue(currentTime);
+      console.log({ currentTime });
     }
-  }, [setPageCount, table, tableData]);
+  }, [setPageCount, table, tableData, currentTime]);
 
   return (
-    <div className={styles.rootTableWrapper}>
+    <div className={styles.rootTableWrapper} data-test-id="DataTableComponent">
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {

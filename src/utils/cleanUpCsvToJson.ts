@@ -77,17 +77,18 @@ const cleanUpCsvToJson = (
   });
 
   // Sort the tagged array in chronological order
-  const sortedArray = taggedArray.sort(
-    ({ unixTime: aUnixTime }, { unixTime: bUnixTime }) => {
-      if (aUnixTime && bUnixTime) {
-        return aUnixTime - bUnixTime;
-      } else {
-        return 0;
-      }
-    }
-  );
+  // - Probably to leave the sorting to DataTableComponent
+  // const sortedArray = taggedArray.sort(
+  //   ({ unixTime: aUnixTime }, { unixTime: bUnixTime }) => {
+  //     if (aUnixTime && bUnixTime) {
+  //       return aUnixTime - bUnixTime;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+  // );
 
-  return sortedArray;
+  return taggedArray;
 };
 
 export default cleanUpCsvToJson;
