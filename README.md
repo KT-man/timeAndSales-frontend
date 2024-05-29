@@ -1,6 +1,6 @@
 # Time and Sales data on Frontend
 
-![alt text](image.png)
+![image](https://github.com/KT-man/timeAndSales-frontend/assets/89538905/99bb0b83-e99e-4cb4-904d-652be4045051)
 
 - Hosted on AWS amplify at: https://staging.d25dhwi4hyt16u.amplifyapp.com/
 - Built on React + Vite
