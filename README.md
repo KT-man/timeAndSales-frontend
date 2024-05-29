@@ -12,3 +12,9 @@
 
 - Sample data and csv found in public/timeAndSales.csv
 - This will work for csv files in the same format
+
+## TODOs:
+
+- Add filter and sorting capabilities to React Table
+- Visualize data in a graph as well
+- Additional styles to show increase/ decrease, new entries
