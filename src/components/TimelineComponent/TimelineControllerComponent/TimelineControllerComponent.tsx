@@ -107,7 +107,7 @@ const TimelineControllerComponent: FC<
   };
   const stopTimerHandler = () => {
     setActiveTimer(false);
-    setActiveIntervalId(1);
+    setActiveIntervalId(1 as unknown as ReturnType<typeof setTimeout>);
     clearInterval(activeIntervalId);
   };
 
