@@ -117,7 +117,7 @@ const TimelineControllerComponent: FC<
       data-test-id="TimelineControllerComponent"
     >
       <div className={styles.presetButtonsWrapper}>
-        <span>Click on button to start timer</span>
+        <span>Click on button to start timer (1s interval)</span>
         <button
           type="button"
           onClick={normalSpeedHandler}
