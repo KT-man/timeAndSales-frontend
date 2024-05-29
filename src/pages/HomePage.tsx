@@ -5,7 +5,6 @@ import cleanUpCsvToJson from "../utils/cleanUpCsvToJson";
 
 import ControlPanelComponent from "@/components/ControlPanelComponent/ControlPanelComponent";
 import DataTableComponent from "@/components/DataTableComponent/DataTableComponent";
-import mockData from "@/data/InitialArray.json";
 
 import TimelineComponent from "@/components/TimelineComponent/TimelineComponent";
 import styles from "./HomePage.module.css";
@@ -17,10 +16,8 @@ import convertUnixToTime from "@/components/TimelineComponent/utils/convertUnixT
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
-  const [csvData, setCsvData] =
-    useState<Array<TimeAndSalesInterface>>(mockData);
+  const [csvData, setCsvData] = useState<Array<TimeAndSalesInterface>>([]);
   const [timelineData, setTimelineData] = useRecoilState(timelineStore);
-  console.log(timelineData);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -95,13 +92,25 @@ const HomePage: React.FC<HomePageProps> = () => {
       </form>
 
       <br />
-      <TimelineComponent csvData={csvData} />
-      <p>Current time: {convertUnixToTime(timelineData.currentTime)}</p>
-      <br></br>
-      <div className={styles.homePageWrapper}>
-        <ControlPanelComponent />
-        <DataTableComponent tableData={csvData} />
-      </div>
+      {csvData.length > 0 && (
+        <>
+          <TimelineComponent csvData={csvData} />
+          <p>Current time: {convertUnixToTime(timelineData.currentTime)}</p>
+          <br></br>
+          <div className={styles.homePageWrapper}>
+            <ControlPanelComponent />
+            <DataTableComponent tableData={csvData} />
+          </div>
+        </>
+      )}
+      {csvData.length === 0 && (
+        <>
+          <div>No data uploaded yet, start by uploading a csv!</div>
+          <div>
+            It doesn't actually upload anything. It just loads into your browser
+          </div>
+        </>
+      )}
     </div>
   );
 };

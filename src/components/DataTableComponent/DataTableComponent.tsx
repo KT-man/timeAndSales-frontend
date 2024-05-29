@@ -32,7 +32,7 @@ const columns = [
     cell: (info) => info.getValue(),
     filterFn: (row, columnId, filterValue) => {
       const currentValue = row.getValue<number>(columnId);
-      const isPastValue = currentValue < filterValue;
+      const isPastValue = currentValue <= filterValue;
       return isPastValue;
     },
     enableGlobalFilter: true,
