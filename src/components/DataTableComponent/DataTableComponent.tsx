@@ -1,3 +1,4 @@
+import currentTimeSelector from "@/recoilStores/timeline/currentTimeSelector";
 import TimeAndSalesInterface from "@/types/TimeAndSalesInterface/TimeAndSalesInterface";
 import {
   ColumnFilter,
@@ -10,11 +11,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { FC, useEffect, useState } from "react";
-import styles from "./DataTableComponent.module.css";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import paginateStore from "../../recoilStores/paginate/paginateStore";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
-import currentTimeSelector from "@/recoilStores/timeline/currentTimeSelector";
+import paginateStore from "../../recoilStores/paginate/paginateStore";
+import styles from "./DataTableComponent.module.css";
 
 interface DataTableComponentProps {
   tableData: Array<TimeAndSalesInterface>;
@@ -105,16 +105,21 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
             return (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  console.log(header);
                   return (
                     <th
                       className={styles.thCells}
                       key={header.id}
                       colSpan={header.colSpan}
                     >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      <>
+                        <div data-test-id="columnHeaderText">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </div>
+                      </>
                     </th>
                   );
                 })}
