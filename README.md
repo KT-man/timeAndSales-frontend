@@ -4,6 +4,8 @@
 
 - Hosted on AWS amplify at: https://staging.d25dhwi4hyt16u.amplifyapp.com/
 - Built on React + Vite
+  - Recoil for internal state management
+  - TanStack Table for displaying of data table 
 - Kinda only built for desktop...
 - POC project to replay level 2(?) sales data for users to test out their strategies
 - Project is frontend only; no backend capabilities
