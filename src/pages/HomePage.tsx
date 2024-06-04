@@ -10,14 +10,16 @@ import TimelineComponent from "@/components/TimelineComponent/TimelineComponent"
 import styles from "./HomePage.module.css";
 import TimelineStoreInterface from "@/types/TimelineStoreInterface/TimelineStoreInterface";
 import { useRecoilState } from "recoil";
-import timelineStore from "@/recoilStores/timeline/timelineStore";
 import convertUnixToTime from "@/components/TimelineComponent/utils/convertUnixToTime";
+import columnFilterStore from "@/recoilStores/columnFilters/columnFilterStore";
+import timelineStore from "@/recoilStores/timeline/timelineStore";
 
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
   const [csvData, setCsvData] = useState<Array<TimeAndSalesInterface>>([]);
   const [timelineData, setTimelineData] = useRecoilState(timelineStore);
+  const [columnFilters, setColumnFilters] = useRecoilState(columnFilterStore);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,6 +56,7 @@ const HomePage: React.FC<HomePageProps> = () => {
             const startTime = Math.min(...unixTimeArray);
             const endTime = Math.max(...unixTimeArray);
 
+            // Setting start and end time
             const timelineState: TimelineStoreInterface = {
               startTime,
               endTime,
@@ -61,9 +64,23 @@ const HomePage: React.FC<HomePageProps> = () => {
             };
             console.log(startTime, endTime, unixTimeArray);
 
+            // Setting table initial filter state
+            // Update unix time column filter on mount
+            const unixTimeFilterIndex = columnFilters.findIndex(
+              ({ id }) => id === "unixTime"
+            );
+
             // Set states
             setCsvData(taggedJsonData);
             setTimelineData(timelineState);
+            setColumnFilters((prevValue) => {
+              const prevValueCopy = structuredClone(prevValue);
+              prevValueCopy[unixTimeFilterIndex] = {
+                id: "unixTime",
+                value: startTime,
+              };
+              return prevValueCopy;
+            });
           } else {
             console.log("Error with converting CSV", {
               errors: convertedData.errors,

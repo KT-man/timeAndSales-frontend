@@ -15,6 +15,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import pageCountStore from "../../recoilStores/pageCount/pageCountStore";
 import paginateStore from "../../recoilStores/paginate/paginateStore";
 import styles from "./DataTableComponent.module.css";
+import DataTableHeaderComponent from "./HeaderFilterComponent/DataTableHeaderComponent";
+import { table } from "console";
+import columnFilterStore from "@/recoilStores/columnFilters/columnFilterStore";
 
 interface DataTableComponentProps {
   tableData: Array<TimeAndSalesInterface>;
@@ -26,6 +29,7 @@ const columns = [
   columnHelper.accessor("time", {
     id: "time",
     cell: (info) => info.getValue(),
+    enableColumnFilter: false,
   }),
   columnHelper.accessor("unixTime", {
     id: "unixTime",
@@ -44,6 +48,10 @@ const columns = [
   columnHelper.accessor("tradeSize", {
     id: "tradeSize",
     cell: (info) => info.getValue(),
+    filterFn: (row, columnId, filterValue) => {
+      const currentValue = row.getValue<number>(columnId);
+      return Number(currentValue) > Number(filterValue);
+    },
   }),
   columnHelper.accessor("type", {
     id: "type",
@@ -54,9 +62,9 @@ const columns = [
 const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
   const currentTime = useRecoilValue(currentTimeSelector);
   const [pagination, setPagination] = useRecoilState(paginateStore);
-  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([
-    { id: "unixTime", value: currentTime },
-  ]);
+  const [columnFilters, setColumnFilters] =
+    useRecoilState<ColumnFilter[]>(columnFilterStore);
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     time: true,
     unixTime: false,
@@ -85,17 +93,19 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
   });
 
   useEffect(() => {
-    // Set Pagination, set column filtering
-    if (table) {
-      const totalPages = table.getPageCount();
-
-      setPageCount(totalPages);
-
-      const unixTimeColumn = table.getColumn("unixTime");
-      unixTimeColumn?.setFilterValue(currentTime);
-      console.log({ currentTime });
-    }
+    console.log("Original change");
+    // Set pagination max page
+    const totalPages = table.getPageCount();
+    setPageCount(totalPages);
   }, [setPageCount, table, tableData, currentTime]);
+
+  useEffect(() => {
+    console.log("Pagination change");
+    // Update pagination on columnFilter changes
+    const totalPages = table.getPageCount();
+    setPageCount(totalPages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnFilters]);
 
   return (
     <div className={styles.rootTableWrapper} data-test-id="DataTableComponent">
@@ -105,7 +115,6 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
             return (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  console.log(header);
                   return (
                     <th
                       className={styles.thCells}
@@ -114,10 +123,7 @@ const DataTableComponent: FC<DataTableComponentProps> = ({ tableData }) => {
                     >
                       <>
                         <div data-test-id="columnHeaderText">
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          <DataTableHeaderComponent header={header} />
                         </div>
                       </>
                     </th>
